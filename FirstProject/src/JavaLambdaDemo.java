@@ -241,11 +241,11 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
 
             try {
 
-                stmt.execute("SELECT user_name FROM student WHERE user_name LIKE 'K%'");
+                String searchQuery = ("SELECT * FROM `student` WHERE user_name LIKE '"+filter_username+"%'");
 
                 JOptionPane.showMessageDialog(null,"FILTERED");
 
-                rs = stmt.executeQuery("SELECT * FROM student");
+                rs = stmt.executeQuery(searchQuery);
 
                 model = new DefaultTableModel();
                 String[] columns = {"user_id","user_name"};
