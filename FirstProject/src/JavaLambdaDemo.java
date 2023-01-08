@@ -12,8 +12,8 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
     static DefaultTableModel model;
 
     static JScrollPane scroll;
-    static JTextField txt1,txt2,txt3;
-    static JButton but1,but2,but3,but4;
+    static JTextField txt1,txt2,txt3,txt4;
+    static JButton but1,but2,but3,but4,but5;
     static JComboBox tblcb;
     static Connection con;
     static Statement stmt;
@@ -42,11 +42,13 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
         txt1 = new JTextField();
         txt2 = new JTextField();
         txt3 = new JTextField();
+        txt4 = new JTextField();
 
         but1 = new JButton("ADD");
         but2 = new JButton("Clear");
         but3 = new JButton("Update");
         but4 = new JButton("Delete");
+        but5 = new JButton("Filter");
 
         but1.setBackground(Color.green);
         but1.setForeground(Color.white);
@@ -56,11 +58,14 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
         but3.setForeground(Color.white);
         but4.setBackground(Color.red);
         but4.setForeground(Color.white);
+        but5.setBackground(Color.blue);
+        but5.setForeground(Color.white);
 
         but1.addActionListener(fra);
         but2.addActionListener(fra);
         but3.addActionListener(fra);
         but4.addActionListener(fra);
+        but5.addActionListener(fra);
 
         Container c = fra.getContentPane();
         c.setBackground(Color.cyan);
@@ -70,18 +75,22 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
         JLabel student_lbl = new JLabel("Select user ID:");
         JLabel student_id_lbl = new JLabel("New ID:");
         JLabel student_name_lbl = new JLabel("New name:");
+        JLabel student_name_filter = new JLabel("First Letter:");
 
         student_lbl.setBounds(50,100,100,50);
         student_id_lbl.setBounds(50,275,100,50);
         student_name_lbl.setBounds(50,325,100,50);
+        student_name_filter.setBounds(50,430,100,50);
 
         txt1.setBounds(150,100,100,50);
         txt2.setBounds(150,275,100,50);
         txt3.setBounds(150,330,100,50);
+        txt4.setBounds(150,440,70,30);
         but1.setBounds(100,390,70,30);
         but2.setBounds(150,175,100,30);
         but3.setBounds(180,390,100,30);
         but4.setBounds(150,225,100,30);
+        but5.setBounds(230,440,70,30);
         scroll.setBounds(300,100,400,200);
 
         fra.add(scroll);
@@ -89,15 +98,18 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
         fra.add(student_lbl);
         fra.add(student_id_lbl);
         fra.add(student_name_lbl);
+        fra.add(student_name_filter);
 
         fra.add(txt1);
         fra.add(txt2);
         fra.add(txt3);
+        fra.add(txt4);
 
         fra.add(but1);
         fra.add(but2);
         fra.add(but3);
         fra.add(but4);
+        fra.add(but5);
 
         fra.setSize(width,height);
         fra.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,6 +147,7 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
         String select_userid = txt1.getText();
         String new_userid = txt2.getText();
         String new_username = txt3.getText();
+        String filter_username = txt4.getText();
 
         String user_id ,user_name;
 
@@ -166,6 +179,7 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
             txt1.setText("");
             txt2.setText("");
             txt3.setText("");
+            txt4.setText("");
 
         }
         else if (e.getSource() == but3) {
@@ -220,6 +234,36 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
             catch (Exception f){
 
                 f.printStackTrace();
+
+            }
+        }
+        else if (e.getSource() == but5){
+
+            try {
+
+                stmt.execute("SELECT user_name FROM student WHERE user_name LIKE 'K%'");
+
+                JOptionPane.showMessageDialog(null,"FILTERED");
+
+                rs = stmt.executeQuery("SELECT * FROM student");
+
+                model = new DefaultTableModel();
+                String[] columns = {"user_id","user_name"};
+                model.setColumnIdentifiers(columns);
+                tbl1.setModel(model);
+
+                while(rs.next()){
+
+                    user_id = rs.getString(2);
+                    user_name = rs.getString(3);
+
+                    model.addRow(new Object[]{user_id,user_name});
+
+                }
+            }
+            catch (Exception v){
+
+                v.printStackTrace();
 
             }
         }
