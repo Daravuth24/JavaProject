@@ -159,6 +159,11 @@ public class JavaLambdaDemo extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Hello KIT Saved");
                 rs = stmt.executeQuery("SELECT * FROM student");
 
+                model = new DefaultTableModel();
+                String[] columns = {"user_id","user_name"};
+                model.setColumnIdentifiers(columns);
+                tbl1.setModel(model);
+
                 while(rs.next()) {
 
                     user_id = rs.getString(2);
